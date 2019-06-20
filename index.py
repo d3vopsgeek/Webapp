@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, session, abort
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 import os
 
 app = Flask(__name__)
@@ -6,10 +6,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    if not session.get('logged_in'):
-        return render_template('home.html')
+    # f not session.get('logged_in'):
+    #    return render_template('home.html')
+    # else:
+    if 'username' in session:
+        username = session['username']
+        return 'logged as ' + username + '<br>' + "<b><a href = '/logout'>click here to log out</a></b>"
     else:
-        return "Hello Boss!"
+        return render_template('home.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -20,6 +24,7 @@ def login():
             flash('Wrong Credentials!')
         else:
             session['logged_in'] = True
+            session['username'] = 'admin'
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
 
@@ -31,15 +36,13 @@ def about():
 
 @app.route("/logout")
 def logout():
-    session['logged_in'] = False
+    # session['logged_in'] = False
+    # session['username'] = None
+    session.pop('username', None)
+    # return redirect(url_for('index'))
     return home()
 
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)
     app.run(debug=True)
-
-
-
-
-
