@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, session
+from flask import Flask, render_template, redirect, url_for, request, flash, session, make_response
 import os
 
 app = Flask(__name__)
@@ -39,10 +39,20 @@ def logout():
     # session['logged_in'] = False
     # session['username'] = None
     session.pop('username', None)
-    # return redirect(url_for('index'))
-    return home()
+    session.pop('logged_in', None)
+    return redirect(url_for('home'))
+
+
+@app.route("/locations")
+def locations():
+    return render_template('locations.html')
+
+
+@app.route("/reglocations", methods=['POST'])
+def reply():
+    return render_template('locations.html')
 
 
 if __name__ == '__main__':
-    app.secret_key = os.urandom(12)
+    app.secret_key = os.urandom(24)
     app.run(debug=True)

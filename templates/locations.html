@@ -1,0 +1,14 @@
+{% extends "layout.html"%}
+
+{% block content %}
+
+<h1>Register locations for this system</h1>
+<form method="POST" action="/reglocations">
+    <table>
+        <tr><td>Location ID:</td><td><input type="text" name="id"/></td></tr>
+    </table>
+    <input type="submit" value="Press Me!">
+
+</form>
+
+{% endblock %}

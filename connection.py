@@ -1,5 +1,5 @@
 import psycopg2
-
+# It is the most standard library to connect to PostgreSQL
 
 DB_NAME = "ISAC"
 DB_USER = "postgres"
@@ -21,13 +21,15 @@ try:
                             port=DB_PORT)
     print("Database connected successfully")
     cur = conn.cursor()
-    cur.execute("INSERT INTO locations (locationid, locationdesc) VALUES (1,'Puebla')")
-    conn.commit()
+    # cur.execute("INSERT INTO locations (locationid, locationdesc) VALUES (1,'Puebla')")
+    cur.execute("SELECT locationid, locationdesc from locations")
+
+    rows = cur.fetchall()
+    for r in rows:
+        print(f"locationid: {r[0]} locationdesc: {r[1]} ")
+    # conn.commit()
+    # close the cursor
+    cur.close()
     conn.close()
 except psycopg2.OperationalError as e:
     print("Unable to connect or something went wrong during connection")
-
-
-
-
-
